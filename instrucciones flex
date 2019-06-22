@@ -1,0 +1,6 @@
+flex archivo.l //archivo lex con relgas de regex y acciones
+		//traduce el programa
+
+cc lex.yy.c -lfl -o CCode//compilamos el archivo y lo linkeamos con la libreria flex
+
+./CCode < archivo.c

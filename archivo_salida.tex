@@ -1,0 +1,964 @@
+\documentclass[usenames,dvipsnames]{beamer} 
+\usepackage{pgfplots} 
+\usepackage{calc} 
+\usepackage{ifthen} 
+\usepackage{tikz} 
+\pgfplotsset{compat=1.13} 
+\usepackage{xcolor} 
+\usepackage[utf8]{inputenc} 
+\usepackage{multicol} 
+ 
+ 
+\usepackage{lmodern} 
+\setbeamercolor{normal text}{bg=black} %fondo negro 
+\setbeamercolor{normal text}{fg=white} %letras blancas 
+\setbeamercolor{white back}{bg=white} %fondo en graficos blanco 
+\setbeamercolor{frametitle}{fg=Cyan} % titulos cyan 
+\setbeamercolor*{title}{fg=Cyan} %titulo principal cyan 
+ 
+\title{Proyecto 1} 
+\author{Jos\'e Pablo Murillo Vargas, Nicol Morice Sand\'i} 
+\institute[VFU] 
+{ 
+\inst{} 
+Instituto T\'ecnol\'ogico de Costa Rica 
+\and 
+\inst{} 
+Escuela de Ingenier\'ia en Computaci\'on 
+\and 
+\inst{} 
+Compiladores e Int\'erpretes 
+} 
+\date{19-09-2017} 
+ 
+\begin{document} 
+ 
+\frame{\titlepage} 
+ 
+\begin{frame} 
+\frametitle{Explicaci\'on del Scanner} 
+El scanning, o an\'alisis l\'exico es el proceso por el cu\'al se toma el archivo fuente y se intenta de romper en pedacitos significativos llamados tokens.\\[0.2cm] 
+Los scanners funcionan al buscar patronos de car\'acteres dentro del fuente. Una forma de expresar estos patronos es por medio de las \textbf{expresiones regulares}. Por ejemplo el patrón [1-9][0-9]* ser\'ia un patr\'on \'util para encontrar todos los n\'umeros enteros dentro del archivo fuente. 
+\end{frame} 
+ 
+\begin{frame} 
+\frametitle{Explicaci\'on de Flex} 
+Flex (Fast lexical analyzer generator) es un programa que genera los analizadores l\'exicos o scanners. Su prop\'osito era mejorar las deficiencias y pulgas de Lex. \\[0.2cm] 
+Flex fue escrito originalmente por Jef Poskanzer y luego fu\'e mejorado por Vern Paxson y Van Jacobson. \\[0.2cm] 
+Un programa en flex es usar un conjunto de expresiones regulares y escribir que acciones debe tomar cu\'ando encuentre uno de estos en el fuente.\\[0.2cm] 
+Flex tambi\'en traduce todas las expresiones regulares en una forma interna eficiente que le permite hacer match simult\'aneo de todos los patrones con el archivo fuente. 
+\end{frame} 
+ 
+\begin{frame} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textbf{\textcolor{DarkOrchid}{char}} 
+\underline{\textcolor{Thistle}{J}} 
+[ 
+\textcolor{CadetBlue}{1} 
+\textcolor{JungleGreen}{\textless\textless} 
+\textcolor{CadetBlue}{18} 
+] 
+; 
+\textbf{\textcolor{DarkOrchid}{int}} 
+\underline{\textcolor{Thistle}{G}} 
+[ 
+\underline{\textcolor{Thistle}{W}} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{p}} 
+] 
+, 
+\underline{\textcolor{Thistle}{\_}} 
+, 
+\underline{\textcolor{Thistle}{k}} 
+, 
+\underline{\textcolor{Thistle}{I}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{W}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{4} 
+\textcolor{JungleGreen}{+} 
+\textcolor{CadetBlue}{1} 
+, 
+\underline{\textcolor{Thistle}{w}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{p}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{4} 
+\textcolor{JungleGreen}{+} 
+\textcolor{CadetBlue}{1} 
+; 
+\textbf{\textcolor{DarkOrchid}{float}} 
+\underline{\textcolor{Thistle}{C}} 
+, 
+\underline{\textcolor{Thistle}{B}} 
+, 
+\underline{\textcolor{Thistle}{e}} 
+; 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textbf{\textcolor{DarkOrchid}{unsigned}} 
+\textbf{\textcolor{DarkOrchid}{long}} 
+\textbf{\textcolor{DarkOrchid}{long}} 
+\underline{\textcolor{Thistle}{A}} 
+, 
+\underline{\textcolor{Thistle}{n}} 
+, 
+\underline{\textcolor{Thistle}{d}} 
+, 
+\underline{\textcolor{Thistle}{t}} 
+, 
+\underline{\textcolor{Thistle}{h}} 
+, 
+\underline{\textcolor{Thistle}{x}} 
+, 
+\underline{\textcolor{Thistle}{f}} 
+, 
+\underline{\textcolor{Thistle}{o}} 
+, 
+\underline{\textcolor{Thistle}{r}} 
+, 
+\underline{\textcolor{Thistle}{a}} 
+, 
+\underline{\textcolor{Thistle}{l}} 
+, 
+\underline{\textcolor{Thistle}{L}} 
+, 
+\underline{\textcolor{Thistle}{F}} 
+, 
+\underline{\textcolor{Thistle}{i}} 
+, 
+\underline{\textcolor{Thistle}{s}} 
+, 
+\underline{\textcolor{Thistle}{H}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{1} 
+\textcolor{JungleGreen}{\textless\textless} 
+\textcolor{CadetBlue}{18} 
+, 
+\underline{\textcolor{Thistle}{b}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{250} 
+, 
+\underline{\textcolor{Thistle}{D}} 
+[ 
+\textcolor{CadetBlue}{1} 
+\textcolor{JungleGreen}{\textless\textless} 
+\textcolor{CadetBlue}{14} 
+] 
+, 
+\underline{\textcolor{Thistle}{z}} 
+[ 
+\underline{\textcolor{Thistle}{W}} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{p}} 
+] 
+, 
+\underline{\textcolor{Thistle}{q}} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{0x820008202625a0} 
+; 
+\textbf{\textcolor{DarkOrchid}{int}} 
+\underline{\textcolor{Thistle}{main}} 
+( 
+) 
+\{ 
+\underline{\textcolor{Thistle}{Display}} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{j}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{XOpenDisplay}} 
+( 
+\textcolor{CadetBlue}{0} 
+) 
+; 
+\underline{\textcolor{Thistle}{Window}} 
+\underline{\textcolor{Thistle}{u}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{XCreateSimpleWindow}} 
+\textcolor{black}{ } \newline 
+\begin{multicols}{3} 
+	 \begin{itemize} 
+	 	 \item \textcolor{DarkOrchid}{Keywords} 
+	 	 \item \textcolor{Thistle}{Identifiers} 
+	 	 \item \textcolor{CadetBlue}{Numbers} 
+	 	 \item \textcolor{GreenYellow}{String-literal} 
+	 	 \item \textcolor{JungleGreen}{Operators} 
+	 	 \item \textcolor{white}{Punctuators} 
+	 \end{itemize} 
+\end{multicols} 
+\end{frame} 
+ 
+\begin{frame} 
+\textcolor{black}{ } \newline 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\underline{\textcolor{Thistle}{RootWindow}} 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\textcolor{CadetBlue}{0} 
+) 
+, 
+\textcolor{CadetBlue}{0} 
+, 
+\textcolor{CadetBlue}{0} 
+, 
+\underline{\textcolor{Thistle}{W}} 
+, 
+\underline{\textcolor{Thistle}{p}} 
+, 
+\textcolor{CadetBlue}{1} 
+, 
+\textcolor{CadetBlue}{0} 
+, 
+\textcolor{CadetBlue}{0} 
+) 
+; 
+\underline{\textcolor{Thistle}{XImage}} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{Y}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{XCreateImage}} 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\underline{\textcolor{Thistle}{DefaultVisual}} 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\textcolor{CadetBlue}{0} 
+) 
+, 
+\textcolor{CadetBlue}{24} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+, 
+\textcolor{CadetBlue}{2} 
+, 
+\textcolor{CadetBlue}{0} 
+, 
+( 
+\textbf{\textcolor{DarkOrchid}{char}} 
+\textcolor{JungleGreen}{*} 
+) 
+\underline{\textcolor{Thistle}{G}} 
+, 
+\underline{\textcolor{Thistle}{W}} 
+, 
+\underline{\textcolor{Thistle}{p}} 
+, 
+\textcolor{CadetBlue}{32} 
+, 
+\textcolor{CadetBlue}{0} 
+) 
+; 
+\underline{\textcolor{Thistle}{XEvent}} 
+\underline{\textcolor{Thistle}{M}} 
+; 
+\textbf{\textcolor{DarkOrchid}{for}} 
+( 
+\underline{\textcolor{Thistle}{XMapWindow}} 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\underline{\textcolor{Thistle}{u}} 
+) 
+; 
+\underline{\textcolor{Thistle}{XSelectInput}} 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\underline{\textcolor{Thistle}{u}} 
+, 
+\textcolor{CadetBlue}{1} 
+) 
+\textcolor{JungleGreen}{\&\&}\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{-} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{CadetBlue}{65307} 
+; 
+) 
+\{ 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\textcolor{JungleGreen}{!} 
+\underline{\textcolor{Thistle}{H}} 
+) 
+\{ 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\underline{\textcolor{Thistle}{XCheckWindowEvent}} 
+( 
+\underline{\textcolor{Thistle}{j}} 
+, 
+\underline{\textcolor{Thistle}{u}} 
+, 
+\textcolor{CadetBlue}{1} 
+, 
+\textcolor{JungleGreen}{\&}\underline{\textcolor{Thistle}{M}} 
+) 
+) 
+\{ 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{XLookupKeysym}} 
+( 
+\textcolor{JungleGreen}{\&}\underline{\textcolor{Thistle}{M}} 
+. 
+\underline{\textcolor{Thistle}{xkey}} 
+, 
+\textcolor{CadetBlue}{0} 
+) 
+; 
+\textcolor{JungleGreen}{*} 
+( 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{1} 
+? 
+\textcolor{JungleGreen}{\&}\underline{\textcolor{Thistle}{C}} 
+: 
+\textcolor{JungleGreen}{\&}\underline{\textcolor{Thistle}{B}} 
+) 
+\textcolor{JungleGreen}{-=} 
+( 
+\textcolor{CadetBlue}{.05} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{2} 
+\textcolor{JungleGreen}{\%}\textcolor{CadetBlue}{2} 
+\textcolor{JungleGreen}{*} 
+\textcolor{CadetBlue}{.1} 
+) 
+\textcolor{JungleGreen}{*} 
+\textcolor{JungleGreen}{!} 
+( 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{-} 
+\textcolor{black}{ } \newline 
+\begin{multicols}{3} 
+	 \begin{itemize} 
+	 	 \item \textcolor{DarkOrchid}{Keywords} 
+	 	 \item \textcolor{Thistle}{Identifiers} 
+	 	 \item \textcolor{CadetBlue}{Numbers} 
+	 	 \item \textcolor{GreenYellow}{String-literal} 
+	 	 \item \textcolor{JungleGreen}{Operators} 
+	 	 \item \textcolor{white}{Punctuators} 
+	 \end{itemize} 
+\end{multicols} 
+\end{frame} 
+ 
+\begin{frame} 
+\textcolor{black}{ } \newline 
+\textcolor{CadetBlue}{1} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{4092} 
+\textcolor{JungleGreen}{\textasciicircum}\textcolor{CadetBlue}{3920} 
+) 
+; 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{+} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{CadetBlue}{2} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{0xfe0} 
+\textcolor{JungleGreen}{\textasciicircum}\textcolor{CadetBlue}{0xfc0} 
+\textcolor{JungleGreen}{||} 
+( 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\underline{\textcolor{Thistle}{s}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{+} 
+\textcolor{CadetBlue}{2} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{31} 
+) 
+; 
+\} 
+\textbf{\textcolor{DarkOrchid}{else}} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\{ 
+\underline{\textcolor{Thistle}{y}} 
+( 
+\underline{\textcolor{Thistle}{k}} 
+, 
+\underline{\textcolor{Thistle}{p}} 
+\textcolor{JungleGreen}{+} 
+) 
+\{ 
+\underline{\textcolor{Thistle}{F}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{k}} 
+\textcolor{JungleGreen}{\%}\underline{\textcolor{Thistle}{w}} 
+\textcolor{JungleGreen}{*} 
+\textcolor{CadetBlue}{4} 
+\textcolor{JungleGreen}{|} 
+\underline{\textcolor{Thistle}{k}} 
+\textcolor{JungleGreen}{/} 
+\underline{\textcolor{Thistle}{w}} 
+; 
+\textbf{\textcolor{DarkOrchid}{float}} 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\textcolor{CadetBlue}{6} 
+] 
+, 
+\underline{\textcolor{Thistle}{S}} 
+\textcolor{JungleGreen}{=} 
+( 
+\underline{\textcolor{Thistle}{F}} 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{p}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{2.} 
+) 
+\textcolor{JungleGreen}{/} 
+\underline{\textcolor{Thistle}{p}} 
+; 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\underline{\textcolor{Thistle}{y}} 
+( 
+\underline{\textcolor{Thistle}{\_}} 
+, 
+\underline{\textcolor{Thistle}{W}} 
+\textcolor{JungleGreen}{+} 
+) 
+\{ 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{\_}} 
+\textcolor{JungleGreen}{\%}\underline{\textcolor{Thistle}{I}} 
+\textcolor{JungleGreen}{*} 
+\textcolor{CadetBlue}{4} 
+\textcolor{JungleGreen}{|} 
+\underline{\textcolor{Thistle}{\_}} 
+\textcolor{JungleGreen}{/} 
+\underline{\textcolor{Thistle}{I}} 
+; 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\underline{\textcolor{Thistle}{F}} 
+\textcolor{JungleGreen}{\textless} 
+\underline{\textcolor{Thistle}{p}} 
+\textcolor{JungleGreen}{\&}\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{\textless} 
+\underline{\textcolor{Thistle}{W}} 
+) 
+\{ 
+\underline{\textcolor{Thistle}{o}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{1} 
+; 
+\underline{\textcolor{Thistle}{L}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{+} 
+\underline{\textcolor{Thistle}{F}} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{W}} 
+; 
+\textbf{\textcolor{DarkOrchid}{if}} 
+\textcolor{black}{ } \newline 
+\begin{multicols}{3} 
+	 \begin{itemize} 
+	 	 \item \textcolor{DarkOrchid}{Keywords} 
+	 	 \item \textcolor{Thistle}{Identifiers} 
+	 	 \item \textcolor{CadetBlue}{Numbers} 
+	 	 \item \textcolor{GreenYellow}{String-literal} 
+	 	 \item \textcolor{JungleGreen}{Operators} 
+	 	 \item \textcolor{white}{Punctuators} 
+	 \end{itemize} 
+\end{multicols} 
+\end{frame} 
+ 
+\begin{frame} 
+\textcolor{black}{ } \newline 
+( 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{3} 
+) 
+; 
+\textbf{\textcolor{DarkOrchid}{else}} 
+\{ 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{F}} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{3} 
+; 
+\underline{\textcolor{Thistle}{o}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{W}} 
+; 
+\} 
+\underline{\textcolor{Thistle}{h}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{z}} 
+[ 
+\underline{\textcolor{Thistle}{L}} 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{o}} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{l}} 
+] 
+; 
+\underline{\textcolor{Thistle}{f}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{z}} 
+[ 
+\underline{\textcolor{Thistle}{L}} 
+\textcolor{JungleGreen}{+} 
+( 
+\textcolor{CadetBlue}{4} 
+\textcolor{JungleGreen}{-} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\underline{\textcolor{Thistle}{l}} 
+) 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{o}} 
+] 
+; 
+\underline{\textcolor{Thistle}{t}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{F}} 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{p}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{2} 
+\textcolor{JungleGreen}{||} 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{W}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{2} 
+; 
+\underline{\textcolor{Thistle}{r}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{h}} 
+\textcolor{JungleGreen}{\textasciicircum}\underline{\textcolor{Thistle}{f}} 
+; 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\textcolor{JungleGreen}{!} 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{|} 
+\textcolor{JungleGreen}{!} 
+\underline{\textcolor{Thistle}{t}} 
+\textcolor{JungleGreen}{|} 
+( 
+\textbf{\textcolor{DarkOrchid}{int}} 
+) 
+\underline{\textcolor{Thistle}{r}} 
+\textcolor{JungleGreen}{|} 
+( 
+\textcolor{JungleGreen}{!} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+( 
+\underline{\textcolor{Thistle}{h}} 
+\textcolor{JungleGreen}{-} 
+\textcolor{CadetBlue}{3} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{3} 
+) 
+\textcolor{JungleGreen}{\&\&}\textcolor{CadetBlue}{258063} 
+\textcolor{JungleGreen}{\&}\underline{\textcolor{Thistle}{r}} 
+\textcolor{JungleGreen}{\textgreater\textgreater} 
+\textcolor{CadetBlue}{38} 
+) 
+) 
+\{ 
+\textbf{\textcolor{DarkOrchid}{float}} 
+\underline{\textcolor{Thistle}{V}} 
+\textcolor{JungleGreen}{=} 
+( 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{W}} 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{2.} 
+) 
+\textcolor{JungleGreen}{/} 
+\underline{\textcolor{Thistle}{p}} 
+, 
+\underline{\textcolor{Thistle}{U}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{O}} 
+( 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\underline{\textcolor{Thistle}{S}} 
+, 
+\textcolor{CadetBlue}{1} 
+, 
+\underline{\textcolor{Thistle}{B}} 
+) 
+, 
+\underline{\textcolor{Thistle}{m}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{32768} 
+, 
+\underline{\textcolor{Thistle}{Q}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{m}} 
+; 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\textcolor{CadetBlue}{4} 
+] 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{O}} 
+( 
+\textcolor{JungleGreen}{-} 
+\textcolor{CadetBlue}{1} 
+, 
+\underline{\textcolor{Thistle}{S}} 
+, 
+\underline{\textcolor{Thistle}{B}} 
+) 
+; 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\textcolor{CadetBlue}{3} 
+] 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{O}} 
+( 
+\underline{\textcolor{Thistle}{U}} 
+, 
+\underline{\textcolor{Thistle}{V}} 
+, 
+\underline{\textcolor{Thistle}{C}} 
+) 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+; 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\textcolor{CadetBlue}{5} 
+] 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{O}} 
+( 
+\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{V}} 
+, 
+\underline{\textcolor{Thistle}{U}} 
+, 
+\underline{\textcolor{Thistle}{C}} 
+) 
+; 
+\underline{\textcolor{Thistle}{P}} 
+( 
+( 
+\underline{\textcolor{Thistle}{a}} 
+\textcolor{JungleGreen}{+} 
+\textcolor{CadetBlue}{3} 
+) 
+, 
+\underline{\textcolor{Thistle}{s}} 
+\textcolor{JungleGreen}{*} 
+\textcolor{CadetBlue}{42} 
+) 
+; 
+\underline{\textcolor{Thistle}{t}} 
+\textcolor{JungleGreen}{||} 
+( 
+\underline{\textcolor{Thistle}{A}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{d}} 
+) 
+; 
+\underline{\textcolor{Thistle}{f}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{0} 
+; 
+\underline{\textcolor{Thistle}{y}} 
+( 
+\underline{\textcolor{Thistle}{n}} 
+\textcolor{black}{ } \newline 
+\begin{multicols}{3} 
+	 \begin{itemize} 
+	 	 \item \textcolor{DarkOrchid}{Keywords} 
+	 	 \item \textcolor{Thistle}{Identifiers} 
+	 	 \item \textcolor{CadetBlue}{Numbers} 
+	 	 \item \textcolor{GreenYellow}{String-literal} 
+	 	 \item \textcolor{JungleGreen}{Operators} 
+	 	 \item \textcolor{white}{Punctuators} 
+	 \end{itemize} 
+\end{multicols} 
+\end{frame} 
+ 
+\begin{frame} 
+\textcolor{black}{ } \newline 
+, 
+) 
+\{ 
+\textbf{\textcolor{DarkOrchid}{float}} 
+\underline{\textcolor{Thistle}{N}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\underline{\textcolor{Thistle}{n}} 
+\textcolor{JungleGreen}{+} 
+\textcolor{CadetBlue}{3} 
+] 
+, 
+\underline{\textcolor{Thistle}{E}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{CadetBlue}{1024} 
+\textcolor{JungleGreen}{/} 
+\underline{\textcolor{Thistle}{fabs}} 
+( 
+\underline{\textcolor{Thistle}{N}} 
+) 
+; 
+\underline{\textcolor{Thistle}{b}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{N}} 
+\textcolor{JungleGreen}{\textless} 
+\textcolor{CadetBlue}{0} 
+; 
+\textbf{\textcolor{DarkOrchid}{float}} 
+\underline{\textcolor{Thistle}{K}} 
+\textcolor{JungleGreen}{=} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+( 
+( 
+( 
+\underline{\textcolor{Thistle}{q}} 
+\textcolor{JungleGreen}{\textgreater\textgreater} 
+\textcolor{CadetBlue}{20} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{n}} 
+) 
+\textcolor{JungleGreen}{\textasciicircum}\textcolor{JungleGreen}{$\sim$}\textcolor{JungleGreen}{-} 
+\underline{\textcolor{Thistle}{b}} 
+) 
+\textcolor{JungleGreen}{+} 
+\textcolor{JungleGreen}{!} 
+\underline{\textcolor{Thistle}{b}} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{1023} 
+) 
+\textcolor{JungleGreen}{/} 
+\textcolor{CadetBlue}{1024.} 
+; 
+\textbf{\textcolor{DarkOrchid}{int}} 
+\underline{\textcolor{Thistle}{y}} 
+( 
+\underline{\textcolor{Thistle}{d}} 
+, 
+) 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\underline{\textcolor{Thistle}{d}} 
+] 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\underline{\textcolor{Thistle}{d}} 
+\textcolor{JungleGreen}{+} 
+\textcolor{CadetBlue}{3} 
+] 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{E}} 
+; 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\underline{\textcolor{Thistle}{n}} 
+] 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{round}} 
+( 
+\underline{\textcolor{Thistle}{a}} 
+[ 
+\underline{\textcolor{Thistle}{n}} 
+] 
+) 
+; 
+\underline{\textcolor{Thistle}{P}} 
+( 
+\underline{\textcolor{Thistle}{a}} 
+, 
+\underline{\textcolor{Thistle}{K}} 
+) 
+; 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{q}} 
+\textcolor{JungleGreen}{+} 
+\underline{\textcolor{Thistle}{d}} 
+; 
+\underline{\textcolor{Thistle}{P}} 
+( 
+\underline{\textcolor{Thistle}{a}} 
+, 
+\textcolor{CadetBlue}{1} 
+) 
+; 
+\underline{\textcolor{Thistle}{e}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{E}} 
+\textcolor{JungleGreen}{*} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\underline{\textcolor{Thistle}{K}} 
+; 
+\textbf{\textcolor{DarkOrchid}{for}} 
+( 
+; 
+\underline{\textcolor{Thistle}{e}} 
+\textcolor{JungleGreen}{\textless} 
+\underline{\textcolor{Thistle}{m}} 
+; 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{+=} 
+\underline{\textcolor{Thistle}{d}} 
+) 
+\{ 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{X}} 
+( 
+\underline{\textcolor{Thistle}{i}} 
+) 
+; 
+\underline{\textcolor{Thistle}{t}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{r}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{\textasciicircum}( 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{\textasciicircum}\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{-} 
+( 
+\textcolor{CadetBlue}{1} 
+\textcolor{JungleGreen}{\textless\textless} 
+\textcolor{CadetBlue}{6} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{n}} 
+) 
+) 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{63} 
+\textcolor{JungleGreen}{\textless\textless} 
+\textcolor{CadetBlue}{6} 
+\textcolor{JungleGreen}{*} 
+\underline{\textcolor{Thistle}{n}} 
+; 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\underline{\textcolor{Thistle}{b}} 
+) 
+\{ 
+\underline{\textcolor{Thistle}{r}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{l}} 
+; 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{t}} 
+; 
+\} 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\underline{\textcolor{Thistle}{J}} 
+[ 
+\underline{\textcolor{Thistle}{r}} 
+] 
+) 
+\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{r}} 
+; 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\underline{\textcolor{Thistle}{t}} 
+\textcolor{JungleGreen}{=} 
+\underline{\textcolor{Thistle}{J}} 
+\textcolor{black}{ } \newline 
+\begin{multicols}{3} 
+	 \begin{itemize} 
+	 	 \item \textcolor{DarkOrchid}{Keywords} 
+	 	 \item \textcolor{Thistle}{Identifiers} 
+	 	 \item \textcolor{CadetBlue}{Numbers} 
+	 	 \item \textcolor{GreenYellow}{String-literal} 
+	 	 \item \textcolor{JungleGreen}{Operators} 
+	 	 \item \textcolor{white}{Punctuators} 
+	 \end{itemize} 
+\end{multicols} 
+\end{frame} 
+ 
+\begin{frame} 
+\textcolor{black}{ } \newline 
+[ 
+\underline{\textcolor{Thistle}{l}} 
+] 
+) 
+\{ 
+\underline{\textcolor{Thistle}{x}} 
+\textcolor{JungleGreen}{=} 
+( 
+\underline{\textcolor{Thistle}{n}} 
+\textcolor{JungleGreen}{-} 
+\textcolor{CadetBlue}{1} 
+) 
+? 
+( 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{|} 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{\textgreater\textgreater} 
+\textcolor{CadetBlue}{40} 
+) 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{1023} 
+\textcolor{JungleGreen}{|} 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{\textgreater\textgreater} 
+\textcolor{CadetBlue}{8} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{4190208} 
+\textcolor{JungleGreen}{|} 
+\textcolor{CadetBlue}{4194304} 
+\textcolor{black}{ } \newline 
+\textcolor{black}{ } \newline 
+: 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{1023} 
+\textcolor{JungleGreen}{|} 
+\underline{\textcolor{Thistle}{i}} 
+\textcolor{JungleGreen}{\textgreater\textgreater} 
+\textcolor{CadetBlue}{28} 
+\textcolor{JungleGreen}{\&}\textcolor{CadetBlue}{4190208} 
+\textcolor{JungleGreen}{|} 
+( 
+\underline{\textcolor{Thistle}{b}} 
+\textcolor{JungleGreen}{\textasciicircum}\underline{\textcolor{Thistle}{l}} 
+\textcolor{JungleGreen}{==} 
+\underline{\textcolor{Thistle}{r}} 
+) 
+\textcolor{JungleGreen}{\textless\textless} 
+\textcolor{CadetBlue}{23} 
+; 
+\textbf{\textcolor{DarkOrchid}{if}} 
+( 
+\underline{\textcolor{Thistle}{h}} 
